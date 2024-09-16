@@ -1,3 +1,5 @@
+from packaging import parse_packaging, calc_total_units, get_unit
+import json
 '''
 This is the main program. 
 You should read the packaging.txt in the data folder.
@@ -25,5 +27,19 @@ Example:
         [{ 'bars' : 6}, {'packs' : 12}, {'carton' : 1}],
     ]    
 '''
+input_path = "data\packaging.txt"
+output_path = "data\packaging.json"
+output = []
+with open(input_path, 'r') as f:
+    for line in f.readlines():
+        package = line.strip()
+        parsed = parse_packaging(package)
+        output.append(parsed)
+        unit = get_unit(parsed)
+        total = calc_total_units(parsed)
+        print(f"{package} => total units: {total} {unit}")
 
-# TODO: Write code
+with open(output_path, 'w') as fout:
+    json.dump(output, fout, indent = 4)
+        
+
